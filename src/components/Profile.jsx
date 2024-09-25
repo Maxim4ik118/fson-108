@@ -1,5 +1,12 @@
 const Profile = (props) => {
-  const {  name, phone, email, status, hasPhysicalAddress = false } = props;
+  const {
+    name,
+    phone,
+    email,
+    status,
+    hasPhysicalAddress = false,
+    onSayMyName,
+  } = props;
 
   return (
     <div>
@@ -8,6 +15,7 @@ const Profile = (props) => {
       <p>Email: {email}</p>
       <p>Status: {status}</p>
       <p>Has physical address: {hasPhysicalAddress ? "Yes" : "No"}</p>
+      <button onClick={() => onSayMyName(name)}>Say my name!</button>
     </div>
   );
 };
