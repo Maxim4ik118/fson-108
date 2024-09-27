@@ -1,0 +1,26 @@
+.backdrop {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+    background-color: #fff;
+    width: 400px;
+    height: 600px;
+    overflow: auto;
+    padding: 20px;
+    border-radius: 16px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+}
+
+.closeBtn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+}

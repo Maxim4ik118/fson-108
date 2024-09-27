@@ -1,7 +1,7 @@
 import { useState } from "react";
 import BarControls from "./BarControls";
 import BarStats from "./BarStats";
-import Button from "./Button";
+import Modal from "./Modal/Modal";
 
 const Pub = () => {
   const [bottles, setBottles] = useState({
@@ -9,34 +9,28 @@ const Pub = () => {
     wine: 0,
     whiskey: 0,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onAddDrink = (drinkName) => {
-    // "beer" | "wine" | "whiskey"
     setBottles({ ...bottles, [drinkName]: bottles[drinkName] + 1 });
+  };
 
-    // const obj = {
-    //     age: 10
-    // }
+  const onOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
-    // const objKey = "age"
-    // obj.age // 10
-    // obj[objKey] // 10
-
-    // if (drinkName === "beer") {
-    //   setBottles({ ...bottles, beer: bottles.beer + 1 });
-    // }
-    // if (drinkName === "wine") {
-    //   setBottles({ ...bottles, wine: bottles.wine + 1 });
-    // }
-    // if (drinkName === "whiskey") {
-    //   setBottles({ ...bottles, whiskey: bottles.whiskey + 1 });
-    // }
+  const onCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
     <div>
       <BarStats bottles={bottles} />
       <BarControls onAddDrink={onAddDrink} />
+      <button onClick={onOpenModal} type="button">
+        Open modal for additional details
+      </button>
+      {isModalOpen && <Modal onCloseModal={onCloseModal} />}
     </div>
   );
 };
