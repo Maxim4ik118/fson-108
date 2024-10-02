@@ -58,22 +58,24 @@ const Modal = ({ onCloseModal }) => {
     };
 
     window.addEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "hidden";
 
     return () => {
       window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "auto";
     };
   }, [onCloseModal]);
 
   useEffect(() => {
     const stringifiedValue = JSON.stringify(count);
-    localStorage.setItem("countValue", stringifiedValue)
+    localStorage.setItem("countValue", stringifiedValue);
   }, [count]);
 
   const onBackdropClick = (event) => {
-    if(event.target === event.currentTarget) {
+    if (event.target === event.currentTarget) {
       onCloseModal();
     }
-  }
+  };
 
   return (
     <div onClick={onBackdropClick} className={css.backdrop}>
