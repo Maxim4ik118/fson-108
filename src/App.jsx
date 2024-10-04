@@ -14,6 +14,7 @@ function App() {
 
     return parsedUsers;
   }); // [{...}, {...}, {...}]
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     const stringifiedUsers = JSON.stringify(users);
@@ -26,35 +27,50 @@ function App() {
       id: nanoid(),
     };
 
-    //  setUsers([...users, finalUser]);
     setUsers((prevState) => [...prevState, finalUser]);
   };
 
-  const onDeleteProfile = (profileId) => { // "3"
+  const onDeleteProfile = (profileId) => {
+    // "3"
     const updatedUsers = users.filter((user) => user.id !== profileId);
-    // users = [{id: "1"}, {id: "2"}, {id: "3"}]
-    // "1" !== "3"
-    // "2" !== "3"
-    // "3" !== "3"
-    // updatedUsers = [{id: "1"}, {id: "2"}]
 
-    setUsers(updatedUsers)
-  }
+    setUsers(updatedUsers);
+  };
 
   const onSayMyName = (profileName) => {
     console.log("profileName: ", profileName);
   };
 
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(filter.toLowerCase().trim()) ||
+      user.email.toLowerCase().includes(filter.toLowerCase().trim()) ||
+      user.phone.toLowerCase().includes(filter.toLowerCase().trim())
+  );
+
   return (
     <div>
       <h1>Hello FSON-108!🎉</h1>
       <AddProfileForm onAddProfile={onAddProfile} />
+      <Section title="Find users by (name, email, phone)">
+        <input
+          type="text"
+          placeholder="Enter keyword to search"
+          value={filter}
+          onChange={(event) => setFilter(event.target.value)}
+        />
+        {/* <button
+          onClick={() => setFilter("Hi my gorgeos friend on the Internet!")}
+          type="button"
+        >
+          Click to fill the filter
+        </button> */}
+      </Section>
       <Section title="User list">
-        {users.map((profileItem) => {
+        {filteredUsers.map((profileItem) => {
           return (
             <Profile
               key={profileItem.id}
-              
               id={profileItem.id}
               name={profileItem.name}
               phone={profileItem.phone}
