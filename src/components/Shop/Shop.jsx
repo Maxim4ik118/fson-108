@@ -17,22 +17,22 @@ const Shop = () => {
   };
 
   useEffect(() => {
-    // const fetchProducts = async () => {
-    //   try {
-    //     setIsLoading(true);
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
 
-    //     const { data } = await axios.get(
-    //       "https://dummyjson.com/products?limit=10"
-    //     );
-    //     setProducts(data.products);
-    //   } catch (error) {
-    //     setError(error.message);
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
-    // };
+        const { data } = await axios.get(
+          "https://dummyjson.com/products?limit=10"
+        );
+        setProducts(data.products);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    // fetchProducts();
+    fetchProducts();
   }, []);
 
   useEffect(() => {
