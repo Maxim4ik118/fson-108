@@ -1,0 +1,35 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid yellow;
+}
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.input {
+    font-size: 16px;
+    padding: 5px 10px;
+    
+}
+
+.errorMessage {
+    color: red;
+    font-size: 14px;
+    font-weight: 600;
+}

@@ -25,3 +25,9 @@ export const AddProfileSchema = Yup.object({
     ),
   hasPhysicalAddress: Yup.boolean(),
 });
+
+export const SearchProductsSchema = Yup.object({
+  searchTerm: Yup.string()
+    .required("Search term is required")
+    .min(2, "Search term must be at least 2 characters"),
+});
