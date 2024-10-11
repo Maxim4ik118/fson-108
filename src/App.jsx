@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Profile from "./components/Profile";
 import AddProfileForm from "./components/AddProfileForm/AddProfileForm";
 import Section from "./components/Section";
+import Pub from "./components/Pub";
 
 import profilesData from "../profiles.json";
 import { nanoid } from "nanoid";
@@ -15,6 +16,7 @@ function App() {
     return parsedUsers;
   }); // [{...}, {...}, {...}]
   const [filter, setFilter] = useState("");
+  const [count, setCount] = useState(1);
 
   useEffect(() => {
     const stringifiedUsers = JSON.stringify(users);
@@ -41,16 +43,27 @@ function App() {
     console.log("profileName: ", profileName);
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(filter.toLowerCase().trim()) ||
-      user.email.toLowerCase().includes(filter.toLowerCase().trim()) ||
-      user.phone.toLowerCase().includes(filter.toLowerCase().trim())
+  const filteredUsers = useMemo(
+    () =>
+      users.filter((user) => {
+        for (let i = 0; i <= 400_000_000; i++) {}
+        return (
+          user.name.toLowerCase().includes(filter.toLowerCase().trim()) ||
+          user.email.toLowerCase().includes(filter.toLowerCase().trim()) ||
+          user.phone.toLowerCase().includes(filter.toLowerCase().trim())
+        );
+      }),
+    [users, filter]
   );
+  console.log("filteredUsers: ", filteredUsers);
 
   return (
     <div>
       <h1>Hello FSON-108!🎉</h1>
+      <button type="button" onClick={() => setCount(count + 1)}>
+        Count: {count}
+      </button>
+      <Pub />
       <AddProfileForm onAddProfile={onAddProfile} />
       <Section title="Find users by (name, email, phone)">
         <input

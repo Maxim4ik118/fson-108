@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import css from "./Modal.module.css";
 
 /*
@@ -49,6 +49,8 @@ const Modal = ({ onCloseModal }) => {
 
     return parsedVal;
   });
+  const textRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -77,6 +79,12 @@ const Modal = ({ onCloseModal }) => {
     }
   };
 
+  useEffect(() => {
+    if(!inputRef.current) return;
+
+    inputRef.current.focus();
+  }, [])
+
   return (
     <div onClick={onBackdropClick} className={css.backdrop}>
       <div className={css.modal}>
@@ -84,11 +92,18 @@ const Modal = ({ onCloseModal }) => {
           ❌
         </button>
         <h2>Additional bar info</h2>
-        <p>
+        <input type="text" ref={inputRef} />
+        <p ref={textRef}>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem ut
           tempore sapiente ea? Alias, rerum dolore nesciunt error nostrum porro!
         </p>
-        <button onClick={() => setCount(count + 1)} type="button">
+        <button
+          onClick={() => {
+            setCount(count + 1);
+            inputRef.current.focus();
+          }}
+          type="button"
+        >
           Click to increment: {count}
         </button>
       </div>

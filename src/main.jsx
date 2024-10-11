@@ -1,10 +1,13 @@
 import { createRoot } from "react-dom/client";
-import Shop from "./components/Shop/Shop.jsx";
 
 import "./index.css";
+import App from "./App";
+import { PubContextProvider } from "./context/PubContext";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-  <Shop />
+  <PubContextProvider>
+    <App />
+  </PubContextProvider>
   // </StrictMode>
 );

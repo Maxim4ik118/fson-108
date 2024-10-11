@@ -1,19 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import BarControls from "./BarControls";
 import BarStats from "./BarStats";
 import Modal from "./Modal/Modal";
+import { PubContext } from "../context/PubContext";
 
 const Pub = () => {
-  const [bottles, setBottles] = useState({
-    beer: 0,
-    wine: 0,
-    whiskey: 0,
-  });
+  const { bottles, onAddDrink } = useContext(PubContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const onAddDrink = (drinkName) => {
-    setBottles({ ...bottles, [drinkName]: bottles[drinkName] + 1 });
-  };
 
   const onOpenModal = () => {
     setIsModalOpen(true);
