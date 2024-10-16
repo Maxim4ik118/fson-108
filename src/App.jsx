@@ -1,101 +1,61 @@
-import { useEffect, useMemo, useState } from "react";
+import { NavLink, Route, Routes } from "react-router-dom";
+import clsx from "clsx";
+import UsersPage from "./pages/UsersPage";
+import ProductsPage from "./pages/ProductsPage";
+import PubPage from "./pages/PubPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+import Header from "./components/Header/Header";
 
-import Profile from "./components/Profile";
-import AddProfileForm from "./components/AddProfileForm/AddProfileForm";
-import Section from "./components/Section";
-import Pub from "./components/Pub";
-
-import profilesData from "../profiles.json";
-import { nanoid } from "nanoid";
+/* Маршрутизація складається з двух основних етапів:
+  1. Змінити ЮРЛ адресу (<Link to="/users">Users</Link> | <NavLink to="/users">Users</NavLink>)
+  2. Підготовка маршруту до відображення сторінки за певним маршрутом (<Route path="/users" element={<UsersPage />}/>)
+*/
 
 function App() {
-  const [users, setUsers] = useState(() => {
-    const stringifiedUsers = localStorage.getItem("users");
-    const parsedUsers = JSON.parse(stringifiedUsers) ?? profilesData;
-
-    return parsedUsers;
-  }); // [{...}, {...}, {...}]
-  const [filter, setFilter] = useState("");
-  const [count, setCount] = useState(1);
-
-  useEffect(() => {
-    const stringifiedUsers = JSON.stringify(users);
-    localStorage.setItem("users", stringifiedUsers);
-  }, [users]);
-
-  const onAddProfile = (formData) => {
-    const finalUser = {
-      ...formData,
-      id: nanoid(),
-    };
-
-    setUsers((prevState) => [...prevState, finalUser]);
-  };
-
-  const onDeleteProfile = (profileId) => {
-    // "3"
-    const updatedUsers = users.filter((user) => user.id !== profileId);
-
-    setUsers(updatedUsers);
-  };
-
-  const onSayMyName = (profileName) => {
-    console.log("profileName: ", profileName);
-  };
-
-  const filteredUsers = useMemo(
-    () =>
-      users.filter((user) => {
-        for (let i = 0; i <= 400_000_000; i++) {}
-        return (
-          user.name.toLowerCase().includes(filter.toLowerCase().trim()) ||
-          user.email.toLowerCase().includes(filter.toLowerCase().trim()) ||
-          user.phone.toLowerCase().includes(filter.toLowerCase().trim())
-        );
-      }),
-    [users, filter]
-  );
-  console.log("filteredUsers: ", filteredUsers);
-
   return (
     <div>
-      <h1>Hello FSON-108!🎉</h1>
-      <button type="button" onClick={() => setCount(count + 1)}>
-        Count: {count}
-      </button>
-      <Pub />
-      <AddProfileForm onAddProfile={onAddProfile} />
-      <Section title="Find users by (name, email, phone)">
-        <input
-          type="text"
-          placeholder="Enter keyword to search"
-          value={filter}
-          onChange={(event) => setFilter(event.target.value)}
-        />
-        {/* <button
-          onClick={() => setFilter("Hi my gorgeos friend on the Internet!")}
-          type="button"
-        >
-          Click to fill the filter
-        </button> */}
-      </Section>
-      <Section title="User list">
-        {filteredUsers.map((profileItem) => {
-          return (
-            <Profile
-              key={profileItem.id}
-              id={profileItem.id}
-              name={profileItem.name}
-              phone={profileItem.phone}
-              status={profileItem.status}
-              email={profileItem.email}
-              hasPhysicalAddress={profileItem.hasPhysicalAddress}
-              onSayMyName={onSayMyName}
-              onDeleteProfile={onDeleteProfile}
+      <Header />
+      <div style={{ display: "flex" }}>
+        <aside>
+          <ul>
+            <li>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
+              quae.
+            </li>
+            <li>
+              Quas similique fugiat dignissimos laudantium eius, inventore rem
+              alias neque.
+            </li>
+            <li>
+              Vel eaque velit veniam! Dolorem exercitationem cupiditate libero
+              qui. Labore?
+            </li>
+            <li>Obcaecati quas earum quae ea nulla aut sed autem soluta.</li>
+            <li>
+              Voluptas voluptatum esse voluptates reiciendis recusandae dolor
+              accusamus, autem rerum?
+            </li>
+          </ul>
+        </aside>{" "}
+        <main>
+          <Routes>
+            <Route path="/" element={<PubPage />} />
+            <Route path="/users" element={<UsersPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+
+            <Route
+              path="/products/:productId"
+              element={<ProductDetailsPage />}
             />
-          );
-        })}
-      </Section>
+            {/* <Route path="/products/2" element={<ProductDetailsPage />}/>
+          <Route path="/products/3" element={<ProductDetailsPage />}/>
+          <Route path="/products/4" element={<ProductDetailsPage />}/>
+          <Route path="/products/546564456" element={<ProductDetailsPage />}/>
+          <Route path="/products/wdqwdadwad" element={<ProductDetailsPage />}/>
+          <Route path="/products/87418d4awda" element={<ProductDetailsPage />}/> */}
+          </Routes>
+        </main>
+      </div>
     </div>
   );
 }

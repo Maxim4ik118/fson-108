@@ -5,6 +5,7 @@ import Loader from "../Loader/Loader";
 import css from "./Shop.module.css";
 import axios from "axios";
 import SearchProductForm from "../SearchProductForm/SearchProductForm";
+import { Link } from "react-router-dom";
 
 const Shop = () => {
   const [products, setProducts] = useState(null); // [{...}, {...}, {...}]
@@ -56,6 +57,7 @@ const Shop = () => {
     fetchProductsBySearchValue();
   }, [searchValue]);
 
+  console.log("products: ", products);
   return (
     <div className={css.shopPage}>
       <Section>
@@ -76,11 +78,15 @@ const Shop = () => {
             later 🤷‍♂️.
           </p>
         )}
-        <ul className={css.list}>
+        <div className={css.list}>
           {products !== null &&
             products.map((item) => {
               return (
-                <li key={item.id} className={css.listItem}>
+                <Link
+                  to={`/products/${item.id}`}
+                  key={item.id}
+                  className={css.listItem}
+                >
                   <img
                     className={css.itemImg}
                     src={item.thumbnail}
@@ -89,10 +95,10 @@ const Shop = () => {
                   <h3 className={css.itemTitle}>{item.title}</h3>
                   <p className={css.itemDescription}>{item.description}</p>
                   <p className={css.itemDescription}>Rating: {item.rating}</p>
-                </li>
+                </Link>
               );
             })}
-        </ul>
+        </div>
       </Section>
     </div>
   );
