@@ -1,30 +1,39 @@
 import { useEffect, useState } from "react";
+import { Link, useSearchParams, useLocation } from "react-router-dom";
+import axios from "axios";
+
 import Section from "../Section";
 import Loader from "../Loader/Loader";
 
-import css from "./Shop.module.css";
-import axios from "axios";
 import SearchProductForm from "../SearchProductForm/SearchProductForm";
-import { Link } from "react-router-dom";
+
+import { getProducts, searchProducts } from "../../api/products";
+
+import css from "./Shop.module.css";
 
 const Shop = () => {
   const [products, setProducts] = useState(null); // [{...}, {...}, {...}]
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchValue, setSearchValue] = useState(null);
+  // const [searchValue, setSearchValue] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
 
+  const searchValue = searchParams.get("q");
+  console.log("shop", location);
   const onSearch = (searchTerm) => {
-    setSearchValue(searchTerm);
+    // setSearchValue(searchTerm);
+    setSearchParams({q: searchTerm});
   };
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-
-        const { data } = await axios.get(
-          "https://dummyjson.com/products?limit=10"
-        );
+        // const { data } = await axios.get(
+        //   "https://dummyjson.com/products?limit=10"
+        // );
+        const data = await getProducts({limit: 10});
         setProducts(data.products);
       } catch (error) {
         setError(error.message);
@@ -32,20 +41,22 @@ const Shop = () => {
         setIsLoading(false);
       }
     };
-
-    fetchProducts();
+    if(!searchValue) {
+      fetchProducts();
+    }
+    
   }, []);
 
   useEffect(() => {
     if (searchValue === null) return;
-
+    console.log(searchValue);
     const fetchProductsBySearchValue = async () => {
       try {
         setIsLoading(true);
-
-        const { data } = await axios.get(
-          `https://dummyjson.com/products/search?q=${searchValue}`
-        );
+        const data = await searchProducts(searchValue);
+        // const { data } = await axios.get(
+        //   `https://dummyjson.com/products/search?q=${searchValue}`
+        // );
         setProducts(data.products);
       } catch (error) {
         setError(error.message);
@@ -57,7 +68,6 @@ const Shop = () => {
     fetchProductsBySearchValue();
   }, [searchValue]);
 
-  console.log("products: ", products);
   return (
     <div className={css.shopPage}>
       <Section>
@@ -83,6 +93,9 @@ const Shop = () => {
             products.map((item) => {
               return (
                 <Link
+                  state={{
+                    from: location
+                  }}
                   to={`/products/${item.id}`}
                   key={item.id}
                   className={css.listItem}
